@@ -8,7 +8,12 @@ description = "Implementacion de pipeline de renderizado y rasterizacion de tria
 [dependencies]
 raylib = "5.5.1"
 
+[profile.dev]
+opt-level = 1
+debug = 1
+
 [profile.release]
 opt-level = 3
 lto = "thin"
 codegen-units = 1
+
