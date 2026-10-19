@@ -1,0 +1,19 @@
+# Rust / Cargo
+/target/
+Cargo.lock.bak
+
+# Perfilado y benchmarking
+flamegraph.svg
+perf.data*
+
+# Archivos exportados o temporales de render
+*.bmp
+output*.png
+
+# Editores y entornos
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
