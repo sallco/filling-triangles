@@ -1,7 +1,7 @@
 # Laboratorio 5: Relleno de Triángulos (Render Pipeline)
 
 **Curso**: Gráficas por Computadora — Universidad del Valle de Guatemala  
-**Estudiante**: Diego Andre Calderon
+**Nombre**: Diego Andre Calderon
 ---
 
 ## 1. Arquitectura del Pipeline de Renderizado
