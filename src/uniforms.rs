@@ -6,6 +6,7 @@ pub struct Uniforms {
 }
 
 impl Uniforms {
+    #[allow(dead_code)]
     pub fn new(model_matrix: Matrix) -> Self {
         Self { model_matrix }
     }

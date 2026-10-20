@@ -8,6 +8,7 @@ pub struct Vertex {
 }
 
 impl Vertex {
+    #[allow(dead_code)]
     pub fn new(position: Vector3) -> Self {
         Self {
             position,

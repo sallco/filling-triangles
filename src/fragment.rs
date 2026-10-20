@@ -4,6 +4,7 @@ use raylib::math::{Vector2, Vector3};
 pub struct Fragment {
     pub position: Vector2,
     pub color: Vector3,
+    #[allow(dead_code)]
     pub depth: f32,
 }
 
