@@ -48,8 +48,40 @@ fn render(
     }
 }
 
+fn export_screenshots() {
+    std::fs::create_dir_all("docs").ok();
+    let mut fb = Framebuffer::new(800, 600);
+    fb.set_background_color(Vector3::new(0.05, 0.05, 0.08));
+    let uniforms = Uniforms {
+        model_matrix: Matrix::identity(),
+    };
+    let cases = benchmark::get_test_cases();
+    let vertices = cases[0].vertices.to_vec();
+
+    // 1. Wireframe
+    fb.clear();
+    render(&mut fb, &uniforms, &vertices, TriangleMode::Wireframe);
+    fb.export_to_file("docs/wireframe.png");
+
+    // 2. Barycentric
+    fb.clear();
+    render(&mut fb, &uniforms, &vertices, TriangleMode::FilledBarycentric);
+    fb.export_to_file("docs/barycentric.png");
+
+    // 3. Scanline
+    fb.clear();
+    render(&mut fb, &uniforms, &vertices, TriangleMode::FilledScanline);
+    fb.export_to_file("docs/scanline.png");
+
+    println!("Capturas generadas en docs/: wireframe.png, barycentric.png, scanline.png");
+}
+
 fn main() {
     let args: Vec<String> = std::env::args().collect();
+    if args.iter().any(|arg| arg == "--export-screenshots") {
+        export_screenshots();
+        return;
+    }
     if args.iter().any(|arg| arg == "--benchmark-triangles" || arg == "-b" || arg == "--benchmark") {
         benchmark::run_benchmark();
         return;

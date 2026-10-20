@@ -66,4 +66,8 @@ impl Framebuffer {
             d.draw_texture(&texture, 0, 0, Color::WHITE);
         }
     }
+
+    pub fn export_to_file(&self, path: &str) {
+        self.color_buffer.export_image(path);
+    }
 }
