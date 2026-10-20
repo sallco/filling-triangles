@@ -1,8 +1,7 @@
 # Laboratorio 5: Relleno de Triángulos (Render Pipeline)
 
 **Curso**: Gráficas por Computadora — Universidad del Valle de Guatemala  
-**Estudiante**: Diego Andre Calderon (`sallco <dcalderon918@gmail.com>`)
-
+**Estudiante**: Diego Andre Calderon
 ---
 
 ## 1. Arquitectura del Pipeline de Renderizado
@@ -49,7 +48,16 @@ Dibuja el contorno alámbrico del triángulo conectando las aristas $v_0 \to v_1
 
 ---
 
-## 3. Resultados del Benchmark y Mediciones
+## 3. Demostración Visual de los Modos
+
+| Modo Wireframe (Alámbrico) | Modo Filled Barycentric | Modo Filled Scanline |
+|:---:|:---:|:---:|
+| ![Wireframe](docs/wireframe.png) | ![Barycentric](docs/barycentric.png) | ![Scanline](docs/scanline.png) |
+| *Contorno con líneas Bresenham* | *Relleno por coordenadas baricéntricas* | *Relleno por líneas horizontales* |
+
+---
+
+## 4. Resultados del Benchmark y Mediciones
 
 Mediciones tomadas en modo optimizado (`cargo run --release -- --benchmark-triangles`) sobre **100 iteraciones**, evaluando la mediana de 5 rondas:
 
@@ -66,7 +74,7 @@ Mediciones tomadas en modo optimizado (`cargo run --release -- --benchmark-trian
 
 ---
 
-## 4. Análisis Comparativo de Rendimiento
+## 5. Análisis Comparativo de Rendimiento
 
 1. **Precisión Geométrica Idéntica**:  
    Ambos algoritmos produjeron exactamente la misma cantidad de fragmentos para todos los casos de prueba, demostrando que la regla de muestreo del centro del píxel $(x + 0.5, y + 0.5)$ se aplicó de manera coherente en ambos métodos.
@@ -79,7 +87,7 @@ Mediciones tomadas en modo optimizado (`cargo run --release -- --benchmark-trian
 
 ---
 
-## 5. Instrucciones de Ejecución
+## 6. Instrucciones de Ejecución
 
 ### Visualizador Interactivo
 ```bash
