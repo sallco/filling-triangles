@@ -1,3 +1,4 @@
+mod benchmark;
 mod framebuffer;
 mod fragment;
 mod line;
@@ -48,41 +49,30 @@ fn render(
 }
 
 fn main() {
+    let args: Vec<String> = std::env::args().collect();
+    if args.iter().any(|arg| arg == "--benchmark-triangles" || arg == "-b" || arg == "--benchmark") {
+        benchmark::run_benchmark();
+        return;
+    }
+
     let (mut window, thread) = raylib::init()
         .size(800, 600)
-        .title("Primer triangulo")
+        .title("Laboratorio 5: Relleno de Triangulos")
         .build();
 
     window.set_target_fps(60);
 
     let mut framebuffer = Framebuffer::new(800, 600);
-    framebuffer.set_background_color(Vector3::new(0.0, 0.0, 0.0));
+    framebuffer.set_background_color(Vector3::new(0.05, 0.05, 0.08));
     framebuffer.init_texture(&mut window, &thread);
-
-    let positions = [
-        Vector3::new(300.0, 200.0, 0.0),
-        Vector3::new(400.0, 400.0, 0.0),
-        Vector3::new(500.0, 200.0, 0.0),
-    ];
-
-    let vertex_array: Vec<Vertex> = positions
-        .into_iter()
-        .map(|position| {
-            let mut vertex = Vertex::new_with_color(
-                position,
-                Vector3::new(1.0, 1.0, 1.0),
-            );
-
-            vertex.transformed_position = position;
-            vertex
-        })
-        .collect();
 
     let uniforms = Uniforms {
         model_matrix: Matrix::identity(),
     };
 
-    let mut current_mode = TriangleMode::Wireframe;
+    let test_cases = benchmark::get_test_cases();
+    let mut case_index = 0;
+    let mut current_mode = TriangleMode::FilledBarycentric;
 
     while !window.window_should_close() {
         if window.is_key_pressed(KeyboardKey::KEY_ONE) {
@@ -93,8 +83,25 @@ fn main() {
             current_mode = TriangleMode::FilledScanline;
         }
 
+        if window.is_key_pressed(KeyboardKey::KEY_RIGHT) || window.is_key_pressed(KeyboardKey::KEY_SPACE) {
+            case_index = (case_index + 1) % test_cases.len();
+        } else if window.is_key_pressed(KeyboardKey::KEY_LEFT) {
+            case_index = (case_index + test_cases.len() - 1) % test_cases.len();
+        }
+
+        let current_case = &test_cases[case_index];
+        let vertex_array = current_case.vertices.to_vec();
+
+        window.set_window_title(&thread, &format!(
+            "Filling Triangles | Modo: {:?} | Caso [{}]: {}",
+            current_mode,
+            case_index + 1,
+            current_case.name
+        ));
+
         framebuffer.clear();
         render(&mut framebuffer, &uniforms, &vertex_array, current_mode);
         framebuffer.swap_buffers(&mut window, &thread);
     }
 }
+
