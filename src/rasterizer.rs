@@ -1,8 +1,8 @@
 use crate::fragment::Fragment;
-use crate::triangle::triangle;
+use crate::triangle::{triangle, TriangleMode};
 use crate::vertex::Vertex;
 
-pub fn rasterize(triangles: &[[Vertex; 3]]) -> Vec<Fragment> {
+pub fn rasterize(triangles: &[[Vertex; 3]], mode: TriangleMode) -> Vec<Fragment> {
     let mut fragments = Vec::new();
 
     for tri in triangles {
@@ -10,6 +10,7 @@ pub fn rasterize(triangles: &[[Vertex; 3]]) -> Vec<Fragment> {
             &tri[0],
             &tri[1],
             &tri[2],
+            mode,
         ));
     }
 

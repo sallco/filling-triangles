@@ -13,6 +13,7 @@ use primitive::primitive_assembly;
 use rasterizer::rasterize;
 use raylib::prelude::*;
 use shaders::{fragment_shader, vertex_shader};
+use triangle::TriangleMode;
 use uniforms::Uniforms;
 use vertex::Vertex;
 
@@ -20,6 +21,7 @@ fn render(
     framebuffer: &mut Framebuffer,
     uniforms: &Uniforms,
     vertex_array: &[Vertex],
+    mode: TriangleMode,
 ) {
     // 1. Procesamiento de vértices
     let transformed_vertices: Vec<Vertex> = vertex_array
@@ -31,7 +33,7 @@ fn render(
     let triangles = primitive_assembly(&transformed_vertices);
 
     // 3. Rasterización
-    let fragments = rasterize(&triangles);
+    let fragments = rasterize(&triangles, mode);
 
     // 4. Procesamiento de fragmentos
     for fragment in fragments {
@@ -80,9 +82,19 @@ fn main() {
         model_matrix: Matrix::identity(),
     };
 
+    let mut current_mode = TriangleMode::Wireframe;
+
     while !window.window_should_close() {
+        if window.is_key_pressed(KeyboardKey::KEY_ONE) {
+            current_mode = TriangleMode::Wireframe;
+        } else if window.is_key_pressed(KeyboardKey::KEY_TWO) {
+            current_mode = TriangleMode::FilledBarycentric;
+        } else if window.is_key_pressed(KeyboardKey::KEY_THREE) {
+            current_mode = TriangleMode::FilledScanline;
+        }
+
         framebuffer.clear();
-        render(&mut framebuffer, &uniforms, &vertex_array);
+        render(&mut framebuffer, &uniforms, &vertex_array, current_mode);
         framebuffer.swap_buffers(&mut window, &thread);
     }
 }
